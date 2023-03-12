@@ -5,53 +5,78 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="./main.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <title>Weather</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,200"
+    />
   </head>
   <body>
-    <form class="location-form" action="">
-      <label for="location"></label>
-      <input
-        type="text"
-        id="location"
-        name="location"
-        placeholder="London..."
-      />
-      <button type="submit">Get Weather</button>
-    </form>
-    <h1 class="location-title"></h1>
-    <button class="convert-unit">Convert to F</button>
-    <h4 class="current-temp"></h4>
-    <h4 class="feels-like"></h4>
-    <h4 class="main-value"></h4>
-    <h4 class="description"></h4>
-    <h4 class="humidity"></h4>
-    <h4 class="wind-speed"></h4>
-    <h4 class="last-update"></h4>
+    <div class="top">
+      <form class="location-form" action="">
+        <label for="location"></label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          placeholder="Search Location"
+        />
+        <span class="material-symbols-outlined" id="search"> search </span>
+      </form>
+    </div>
+    <div class="main">
+      <div class="main-location">
+        <h1 class="location-title"></h1>
+        <button id="button-59" role="button" class="convert-unit">
+          Convert to F
+        </button>
+      </div>
+      <div class="content">
+        <div class="left">
+          <h4 class="current-temp"></h4>
+          <img class="weather-icon" src="" alt="" width="80" />
+          <div class="mid">
+            <h4 class="description"></h4>
+          </div>
+          <h4 class="last-update"></h4>
+        </div>
+        <div class="right">
+          <h4 class="feels-like"></h4>
+          <h4 class="humidity"></h4>
+          <h4 class="wind-speed"></h4>
+        </div>
+      </div>
+    </div>
+
     <div class="forecast">
-      <div class="day1">
-        <h1 class="day-title"></h1>
-        <h4 class="day-temp"></h4>
-        <img class="day-img" src="" alt="" width="50" />
-      </div>
-      <div class="day2">
-        <h1 class="day-title"></h1>
-        <h4 class="day-temp"></h4>
-        <img class="day-img" src="" alt="" width="50" />
-      </div>
-      <div class="day3">
-        <h1 class="day-title"></h1>
-        <h4 class="day-temp"></h4>
-        <img class="day-img" src="" alt="" width="50" />
-      </div>
-      <div class="day4">
-        <h1 class="day-title"></h1>
-        <h4 class="day-temp"></h4>
-        <img class="day-img" src="" alt="" width="50" />
-      </div>
-      <div class="day5">
-        <h1 class="day-title"></h1>
-        <h4 class="day-temp"></h4>
-        <img class="day-img" src="" alt="" width="50" />
+      <div class="header"></div>
+      <div class="forecast-content">
+        <div class="day1">
+          <h1 class="day-title"></h1>
+          <img class="day-img" src="" alt="" width="50" />
+          <h4 class="day-temp"></h4>
+        </div>
+        <div class="day2">
+          <h1 class="day-title"></h1>
+          <img class="day-img" src="" alt="" width="50" />
+          <h4 class="day-temp"></h4>
+        </div>
+        <div class="day3">
+          <h1 class="day-title"></h1>
+          <img class="day-img" src="" alt="" width="50" />
+          <h4 class="day-temp"></h4>
+        </div>
+        <div class="day4">
+          <h1 class="day-title"></h1>
+          <img class="day-img" src="" alt="" width="50" />
+          <h4 class="day-temp"></h4>
+        </div>
+        <div class="day5">
+          <h1 class="day-title"></h1>
+          <img class="day-img" src="" alt="" width="50" />
+          <h4 class="day-temp"></h4>
+        </div>
       </div>
     </div>
   </body>

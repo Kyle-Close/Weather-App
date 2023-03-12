@@ -5,19 +5,12 @@ import { WeatherData } from "./weather-data";
 export async function fetchWeatherData(searchLocation) {
   const key = "39419bc96b8d6bd02ae5517421b5c5b6";
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&APPID=${key}`;
-  let response;
-  let data;
+  const response = await fetch(url);
+  const data = await response.json();
 
-  try {
-    response = await fetch(url);
-  } catch (err) {
-    console.log(err);
-  }
-
-  try {
-    data = await response.json();
-  } catch (err) {
-    console.log(err);
+  if (!response.ok) {
+    const error = new Error(data.message || "Failed to fetch weather data");
+    throw error;
   }
 
   // Extract data we are using
@@ -29,6 +22,7 @@ export async function fetchWeatherData(searchLocation) {
   const humidity = data.main.humidity;
   const windSpeed = data.wind.speed;
   const lastUpdate = formatLastUpdatedTime(data.dt);
+  const icon = getIcon(data.weather[0].id);
 
   // Create a new WeatherData object to populate
   let weatherData = new WeatherData(
@@ -39,7 +33,8 @@ export async function fetchWeatherData(searchLocation) {
     description,
     humidity,
     windSpeed,
-    lastUpdate
+    lastUpdate,
+    icon
   );
   return weatherData;
 }
@@ -107,25 +102,25 @@ function getIcon(id) {
   id = Number(id);
   let icon;
   if (id >= 200 && id < 300) {
-    icon = "thunderstorm.png";
+    icon = "thunderstorm.svg";
   } else if (id >= 300 && id < 400) {
-    icon = "rainy.png";
+    icon = "rainy.svg";
   } else if (id >= 500 && id < 505) {
     icon = "sun-showers.png";
   } else if (id === 511) {
-    icon = "snow.png"; // Supposed to be freezing rain
+    icon = "snow.svg"; // Supposed to be freezing rain
   } else if (id >= 505 && id < 600) {
-    icon = "rainy.png";
+    icon = "rainy.svg";
   } else if (id >= 600 && id < 700) {
-    icon = "snow.png";
+    icon = "snow.svg";
   } else if (id >= 700 && id < 800) {
-    icon = "mist.png";
+    icon = "mist.svg";
   } else if (id === 800) {
-    icon = "sun.png";
+    icon = "sun.svg";
   } else if (id >= 800 && id < 803) {
-    icon = "partial-cloudy.png";
+    icon = "partial-cloudy.svg";
   } else if (id > 802) {
-    icon = "cloudy.png";
+    icon = "cloudy.svg";
   }
   return icon;
 }
@@ -240,7 +235,7 @@ function formatLastUpdatedTime(timestamp) {
   const amPm = hours >= 12 ? "pm" : "am";
   const formattedTime = `${dayOfWeek}, ${dayOfMonth}${getDaySuffix(
     dayOfMonth
-  )} ${monthOfYear} '${year} ${formatHour(hours)}:${minutes} ${amPm}`;
+  )} ${monthOfYear} '${year}<br> ${formatHour(hours)}:${minutes} ${amPm}`;
   return formattedTime;
 }
 

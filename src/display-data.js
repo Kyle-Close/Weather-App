@@ -14,40 +14,52 @@ export function getCurrentUnitDisplayed() {
 }
 
 export async function displayWeatherData(location) {
-  currentData = await fetchWeatherData(location);
+  try {
+    currentData = await fetchWeatherData(location);
 
-  displayLocation(currentData.location);
-  displayTemp(currentData.currentTemp, currentUnitDisplayed, "current");
-  displayTemp(currentData.feelsLike, currentUnitDisplayed, "feels");
-  displayMain(currentData.main);
-  displayDescription(currentData.description);
-  displayHumidity(currentData.humidity);
-  displayWindSpeed(currentData.windSpeed);
-  displayLastUpdate(currentData.lastUpdate);
-}
-
-export async function displayWeatherForecast(location) {
-  currentForecastData = await fetchWeatherForecast(location);
-  let daysArray = currentForecastData["daysArray"];
-
-  for (let i = 0; i < daysArray.length; i++) {
-    displayForecastDay(daysArray[i].dayOfWeek, i); // Displays "Monday" for example
-    displayForecastTemp(daysArray[i].averageTemp, i, currentUnitDisplayed); // Displays average temp for that day
-    displayForecastIcon(daysArray[i].icon, i); // Displays the icon which is the most common weather code icon
+    displayLocation(currentData.location);
+    displayTemp(currentData.currentTemp, currentUnitDisplayed, "current");
+    displayTemp(currentData.feelsLike, currentUnitDisplayed, "feels");
+    displayDescription(currentData.description);
+    displayHumidity(currentData.humidity);
+    displayWindSpeed(currentData.windSpeed);
+    displayLastUpdate(currentData.lastUpdate);
+    displayIcon(currentData.icon);
+  } catch (err) {
+    alert("Location not found!");
   }
 }
 
+export async function displayWeatherForecast(location) {
+  try {
+    currentForecastData = await fetchWeatherForecast(location);
+    let daysArray = currentForecastData["daysArray"];
+
+    for (let i = 0; i < daysArray.length; i++) {
+      displayForecastDay(daysArray[i].dayOfWeek, i); // Displays "Monday" for example
+      displayForecastTemp(daysArray[i].averageTemp, i, currentUnitDisplayed); // Displays average temp for that day
+      displayForecastIcon(daysArray[i].icon, i); // Displays the icon which is the most common weather code icon
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function displayIcon(icon) {
+  selectors._weatherIcon.src = `./img/${icon}`;
+}
+
 function displayForecastIcon(icon, index) {
-  selectors._forecast.children[index].children[2].src = `./img/${icon}`;
+  selectors._forecast.children[index].children[1].src = `./img/${icon}`;
 }
 
 export function displayForecastTemp(temp, index, unit) {
   if (unit === "C") {
-    temp = convertKelvinToC(temp) + " C";
+    temp = convertKelvinToC(temp) + "\u00B0";
   } else {
-    temp = convertKelvinToF(temp) + " F";
+    temp = convertKelvinToF(temp) + "\u00B0";
   }
-  selectors._forecast.children[index].children[1].textContent = temp;
+  selectors._forecast.children[index].children[2].textContent = temp;
 }
 
 function displayForecastDay(dayOfWeek, index) {
@@ -60,23 +72,24 @@ export function displayLocation(location) {
 
 export function displayTemp(temp, unit, type) {
   if (unit === "C") {
-    temp = convertKelvinToC(temp) + " C";
+    temp = convertKelvinToC(temp) + "\u00B0";
   } else {
-    temp = convertKelvinToF(temp) + " F";
+    temp = convertKelvinToF(temp) + "\u00B0";
   }
   if (type === "current") {
-    selectors.currentTemp.textContent = `Current Temp: ${temp}`;
+    selectors.currentTemp.textContent = temp;
   } else if (type === "feels") {
     selectors.feelsLike.textContent = `Feels Like: ${temp}`;
   }
 }
 
-function displayMain(value) {
-  selectors.main.textContent = value;
-}
-
 function displayDescription(description) {
-  selectors.description.textContent = description;
+  const words = description.split(" ");
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+  );
+  const capitalizedStr = capitalizedWords.join(" ");
+  selectors.description.textContent = capitalizedStr;
 }
 
 function displayHumidity(humidity) {
@@ -89,7 +102,7 @@ function displayWindSpeed(windSpeed) {
 }
 
 function displayLastUpdate(lastUpdate) {
-  selectors.lastUpdate.textContent = `Last Updated: ${lastUpdate}`;
+  selectors.lastUpdate.innerHTML = lastUpdate;
 }
 
 /* ------- HELPERS ------- */

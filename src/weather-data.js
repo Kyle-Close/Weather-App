@@ -7,7 +7,8 @@ export class WeatherData {
     description,
     humidity,
     windSpeed,
-    lastUpdate
+    lastUpdate,
+    icon
   ) {
     this._location = location;
     this._currentTemp = currentTemp;
@@ -17,6 +18,7 @@ export class WeatherData {
     this._humidity = humidity;
     this._windSpeed = windSpeed;
     this._lastUpdate = lastUpdate;
+    this._icon = icon;
   }
 
   get location() {
@@ -49,5 +51,9 @@ export class WeatherData {
 
   get lastUpdate() {
     return this._lastUpdate;
+  }
+
+  get icon() {
+    return this._icon;
   }
 }

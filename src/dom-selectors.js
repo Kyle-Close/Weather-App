@@ -13,6 +13,7 @@ export class DOMSelectors {
   constructor() {
     this._locationTitle = document.querySelector(".location-title");
     this._currentTemp = document.querySelector(".current-temp");
+    this._submit = document.querySelector(".material-symbols-outlined");
     this._form = document.querySelector(".location-form");
     this._locationInput = document.querySelector("#location");
     this._convertButton = document.querySelector(".convert-unit");
@@ -22,7 +23,8 @@ export class DOMSelectors {
     this._humidity = document.querySelector(".humidity");
     this._windSpeed = document.querySelector(".wind-speed");
     this._lastUpdate = document.querySelector(".last-update");
-    this._forecast = document.querySelector(".forecast");
+    this._forecast = document.querySelector(".forecast-content");
+    this._weatherIcon = document.querySelector(".weather-icon");
 
     this.initFormListener();
     this.initConvertButton();
@@ -118,19 +120,25 @@ export class DOMSelectors {
     this._forecast = value;
   }
 
+  /*    Weather Icon   */
+  /*   --------------  */
+  get weatherIcon() {
+    return this._weatherIcon;
+  }
+
+  set weatherIcon(value) {
+    this._weatherIcon = value;
+  }
+
   /* ------ Event Listeners ------ */
   initFormListener() {
-    this._form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      let searchLocation = this._locationInput.value;
-      displayWeatherData(searchLocation);
-      displayWeatherForecast(searchLocation);
-    });
+    this._submit.addEventListener("click", this.onFormSubmit.bind(this));
+    this._form.addEventListener("submit", this.onFormSubmit.bind(this));
   }
 
   initConvertButton() {
     this._convertButton.addEventListener("click", () => {
-      if (this._convertButton.textContent === "Convert to F") {
+      if (this._convertButton.textContent.includes("Convert to F")) {
         this._convertButton.textContent = "Convert to C";
         setCurrentUnitDisplayed("F");
         displayTemp(currentData.currentTemp, "F", "current");
@@ -158,5 +166,12 @@ export class DOMSelectors {
         }
       }
     });
+  }
+
+  onFormSubmit(e) {
+    e.preventDefault();
+    let searchLocation = this._locationInput.value;
+    displayWeatherData(searchLocation);
+    displayWeatherForecast(searchLocation);
   }
 }
